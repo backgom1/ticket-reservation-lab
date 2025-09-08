@@ -20,28 +20,42 @@ public final class Password {
     }
 
 
-    public static Password of(String rawPassword, PasswordEncoder encoder) {
+    public static Password of(String rawPassword, String nickname, PasswordEncoder encoder) {
+
+        if (isSamePassword(rawPassword, nickname)) {
+            throw new IllegalArgumentException("사용자 ID와 비밀번호가 동일합니다.");
+        }
 
         if (hasMinLength(rawPassword)) {
             throw new IllegalArgumentException("비밀번호는 9자리 이상이어야합니다.");
         }
 
-        if (PASSWORD_PATTERN.matcher(rawPassword).matches()) {
+        if (!PASSWORD_PATTERN.matcher(rawPassword).matches()) {
             throw new IllegalArgumentException("숫자, 대문자, 소문자, 특수문자 각 1개 이상 포함해야합니다.");
         }
 
+
         String encryptedPassword = encoder.encode(rawPassword);
 
-        // 3. 암호화된 값을 가지고 private 생성자를 호출해 객체를 생성합니다.
+
         return new Password(encryptedPassword);
     }
 
     private static boolean hasMinLength(String value) {
-        return value.length() <= MIN_LENGTH;
+        return value.length() < MIN_LENGTH;
+    }
+
+    private static boolean isSamePassword(String rawPassword, String nickname) {
+        return rawPassword.equals(nickname);
     }
 
     public boolean matches(String rawPassword, PasswordEncoder encoder) {
         return encoder.matches(rawPassword, this.value);
     }
+
+    public Password changePassword(String rawPassword, PasswordEncoder encoder) {
+        return of(rawPassword, this.value, encoder);
+    }
+
 
 }

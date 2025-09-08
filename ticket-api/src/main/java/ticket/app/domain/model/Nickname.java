@@ -15,6 +15,7 @@ public record Nickname(String value) {
         if (hasFourOrMoreSequentialChars(value)) {
             throw new IllegalArgumentException("연속된 문자/숫자를 4개 이상 사용할 수 없습니다.");
         }
+
     }
 
     /**
@@ -43,7 +44,7 @@ public record Nickname(String value) {
         }
 
 
-        String[] keyboardRows = { "qwertyuiop", "asdfghjkl", "zxcvbnm" };
+        String[] keyboardRows = {"qwertyuiop", "asdfghjkl", "zxcvbnm"};
         for (String row : keyboardRows) {
             for (int i = 0; i < row.length() - 3; i++) {
                 String sequence = row.substring(i, i + 4);
@@ -54,4 +55,5 @@ public record Nickname(String value) {
         }
         return false;
     }
+
 }

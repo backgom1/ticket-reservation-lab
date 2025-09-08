@@ -13,7 +13,6 @@ import ticket.app.domain.AbstractEntity;
 
 import java.time.LocalDateTime;
 
-import static java.util.Objects.requireNonNull;
 import static org.springframework.util.Assert.state;
 
 @Entity
@@ -46,7 +45,7 @@ public class Member extends AbstractEntity {
     public static Member register(String nickname, String password, String email, PasswordEncoder encoder) {
         Member member = new Member();
         member.nickname = new Nickname(nickname);
-        member.password = Password.of(password, encoder);
+        member.password = Password.of(password, nickname, encoder);
         member.email = email;
         member.status = MemberStatus.PENDING;
         return member;
@@ -63,7 +62,7 @@ public class Member extends AbstractEntity {
     }
 
     public void changePassword(String rawPassword, PasswordEncoder passwordEncoder) {
-        this.password = Password.of(rawPassword, passwordEncoder);
+        this.password = password.changePassword(rawPassword, passwordEncoder);
     }
 
     public boolean verifyPassword(String rawPassword, PasswordEncoder encoder) {
