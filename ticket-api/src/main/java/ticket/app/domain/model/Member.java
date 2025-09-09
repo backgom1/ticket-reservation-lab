@@ -51,6 +51,15 @@ public class Member extends AbstractEntity {
         return member;
     }
 
+    public static Member ofClaims(Long id, String nickname, String email) {
+        Member member = new Member();
+        member.claimsId(id);
+        member.nickname = new Nickname(nickname);
+        member.email = email;
+        member.status = MemberStatus.ACTIVE;
+        return member;
+    }
+
     public void activate() {
         state(status == MemberStatus.PENDING, "Member is not pending");
         this.status = MemberStatus.ACTIVE;

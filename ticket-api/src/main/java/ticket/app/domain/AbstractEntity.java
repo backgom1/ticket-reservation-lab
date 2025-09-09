@@ -19,6 +19,10 @@ public abstract class AbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public void claimsId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
