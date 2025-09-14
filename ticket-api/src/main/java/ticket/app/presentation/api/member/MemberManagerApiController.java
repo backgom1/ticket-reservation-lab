@@ -1,7 +1,9 @@
 package ticket.app.presentation.api.member;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,9 +19,13 @@ public class MemberManagerApiController {
     private final MemberManagementService memberManagementService;
 
     @PostMapping("/api/v1/account/register")
-    public ApiResponse<Void> register(@RequestBody RegisterRequest request) {
-        memberManagementService.
-                register(request);
+    public ApiResponse<Void> register(@RequestBody @Valid RegisterRequest request) {
+        memberManagementService.register(request);
         return ApiResponse.success("회원가입이 완료되었습니다.");
+    }
+
+    @GetMapping("/api/v1/account/check")
+    public ApiResponse<Boolean> duplicateNicknameCheck(String nickname) {
+        return ApiResponse.success(memberManagementService.duplicateNicknameCheck(nickname));
     }
 }

@@ -58,8 +58,8 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
                 .subject(user.getPassword())
-                .claim("id", (Long) user.id())
-                .claim("name", user.username())
+                .claim("id", (Long) user.member().getId())
+                .claim("name", user.getUsername())
                 .claim("refreshId", refreshId)
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + 10_000))

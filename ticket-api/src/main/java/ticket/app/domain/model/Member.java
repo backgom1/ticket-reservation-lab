@@ -24,9 +24,11 @@ import static org.springframework.util.Assert.state;
 public class Member extends AbstractEntity {
 
     @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "nickname"))
     private Nickname nickname;
 
     @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "password"))
     private Password password;
 
     private String email;

@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ticket.app.domain.model.Member;
+import ticket.app.domain.model.Nickname;
 import ticket.app.infra.repository.MemberJpaRepository;
 import ticket.app.presentation.dto.RegisterRequest;
 
@@ -20,5 +21,10 @@ public class MemberManagementService {
     public void register(RegisterRequest request) {
         Member account = Member.register(request.getNickname(), request.getPassword(), request.getEmail(), new BCryptPasswordEncoder());
         memberJpaRepository.save(account);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean duplicateNicknameCheck(String nickname) {
+        return memberJpaRepository.existsByNickname(new Nickname(nickname));
     }
 }
